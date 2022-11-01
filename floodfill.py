@@ -25,7 +25,8 @@ def flood_fill(input_board, old, new, x, y):
     flood_fill(input_board,old,new,x,y-1); #Going West
     return;
 
-flood_fill(board,".","~",5,12)
+# use 4,12 for testing
+flood_fill(board,".","~",4,12)
 
 for a in board:
     print(a)
