@@ -10,7 +10,7 @@ board = [
     "....#............###..",
     "....##############....",
 ]
-
+##function for Flood_Fill
 def flood_fill(input_board, old, new, x, y):
     if input_board[x][y] == "#" or input_board[x][y] == new: #Checking if position is a wall or a tile which has already been changed
         return;
