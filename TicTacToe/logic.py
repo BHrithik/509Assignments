@@ -3,13 +3,13 @@
 # should be unit-testable.
 
 
-def make_empty_board():
+def make_empty_board(): # Returns an empty board for initial attempt
     return [
         [" "," "," "],
         [" "," "," "],
         [" "," "," "],]
 
-def print_board(values):
+def print_board(values): # Printing the board with values
     print("\n")
     print("\t   0     1     2  - Rows")
     print("\t      |     |")
@@ -24,19 +24,22 @@ def print_board(values):
     print("\n")
 
 
-def get_winner(board,k):
+def get_winner(board,k): #Function to find winner
+    #Checking winner in Columns
     if board[0][0] == board[0][1] == board[0][2] == k:
         return k
     elif board[1][0] == board[1][1] == board[1][2] == k:
         return k
     elif board[2][0] == board[2][1] == board[2][2] == k:
         return k
+    #Checking winner in Rows
     elif board[0][0] == board[1][0] == board[2][0] == k:
         return k
     elif board[0][1] == board[1][1] == board[2][1] == k:
         return k
     elif board[0][2] == board[1][2] == board[2][2] == k:
         return k
+    #Checking diagonals
     elif board[1][1] == board[2][2] == board[0][0] == k:
         return k
     elif board[0][2] == board[1][1] == board[2][0] == k:
