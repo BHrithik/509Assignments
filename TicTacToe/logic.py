@@ -50,6 +50,7 @@ class TicTacToe:
             pos = self.difficulty.computerMove()
             if self.board[pos[0]][pos[1]] == " ":
                 self.board[pos[0]][pos[1]]=s2
+                dataCollector.enterMove(self.id,self.count,self.name2,(pos[0],pos[1]))
                 self.count = self.count + 1
                 mademove = 1
 
