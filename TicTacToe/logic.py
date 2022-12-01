@@ -1,6 +1,8 @@
 # This file is where game logic lives. No input
 # or output happens here. The logic in this file
 # should be unit-testable.
+import dataCollector
+import uuid
 
 class TicTacToe:
 
@@ -10,6 +12,9 @@ class TicTacToe:
                       [" "," "," "],]
         self.count = 0
         self.difficulty = difficulty
+        self.id = uuid.uuid1()
+        self.name1 = "Player1",
+        self.name2 = "Player2",
 
     def input1(self, s1):
         flag = 0
@@ -20,6 +25,7 @@ class TicTacToe:
                 self.board[x][y] = s1
                 flag = 1
                 self.count = self.count + 1
+                dataCollector.enterMove(self.id,self.count,self.name1,(x,y))
             else:
                 print("Command failed as the position is already taken or the position is out of bounds")
 
@@ -32,6 +38,7 @@ class TicTacToe:
                 self.board[x][y] = s2
                 flag = 1
                 self.count = self.count + 1
+                dataCollector.enterMove(self.id,self.count,self.name2,(x,y))
             else:
                 print("Command failed as the position is already taken or the position is out of bounds")
 
