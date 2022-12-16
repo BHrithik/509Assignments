@@ -8,13 +8,20 @@ from easy import Easy
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'd96eeaee39a7aaf82d02dc9e3dc10407b2d9b97883b5c8b5'
 
-
 easyMove = Easy() # Difficulty is left as improvement
 game = TicTacToe(easyMove)
 
 
+
 @app.route('/', methods=('POST','GET')) # Link to home page
 def index():
+    game.board = [[" "," "," "],[" "," "," "],[" "," "," "],]
+    game.count = 0
+    game.name1 = "DefaultName1",
+    game.name2 = "bot",
+    game.s1 = "",
+    game.s2 = "",
+    game.isSinglePlayer = False
     return render_template('index.html')
 
 @app.route('/multiplayer', methods=('POST','GET'))
@@ -76,23 +83,38 @@ def aboutme():
 @app.get('/play')
 def play():
     game.print_board()
+    details = ("Game Details:- Name1 {} {}, Name2 {} {}".format(game.name1,game.s1,game.name2,game.s2))
     if(game.isSinglePlayer == True and game.name1[0] == "DefaultName1"):
         print("deen thalli")
         return redirect(url_for('index'))
     if(game.isSinglePlayer == False and game.name1[0] == "DefaultName1" and game.name2[0] == "bot"):
         return redirect(url_for('index'))
     message = ""
-    if(game.get_winner == None):
-        message = ""
-    elif(game.get_winner == game.s1):
+    if(game.count%2 == 0):
+        player = game.name1 + "'s turn"
+    else:
+        player = game.name2 + "'s turn"
+    print("s1 ",game.get_winner(game.s1))
+    print("s2 ",game.get_winner(game.s2))
+    if(game.get_winner(game.s1) == None or game.get_winner(game.s2)== None):
+        message = " "
+        if(game.count >= 9):
+            message = "It is a draw!"
+            player = ""
+    if(game.get_winner(game.s1) == game.s1):
+        print(message, "should change and show s1 won")
         message = "Congratulations " + game.name1 + " you have won the game!"
-    elif(game.get_winner == game.s2):
+        player = ""
+    if(game.get_winner(game.s2) == game.s2):
+        print(message, "should change and show s2 won")
         message = "Congratulations " + game.name2 + " you have won the game!"
+        player = ""
     data = {
         "board": game.board,
-        "len1": range(len(game.board)),
-        "len2": range(len(game.board[0])),
+        "details": details,
         "message": message,
+        "turn": player,
+        "message":message,
     }
     return render_template('play.html',data=data)
 
@@ -104,12 +126,12 @@ def playing(pos1,pos2):
             print("Move no.",game.count)
             print("symbol",game.s1,"in",pos1,pos2)
             if(game.isSinglePlayer):
-                game.computerMove(game.s2[0])
+                if(game.get_winner(game.s1) == None and game.get_winner(game.s2) == None):
+                    game.computerMove(game.s2[0])
         else:
             game.input(game.s2[0],pos1,pos2)
             print("Player 2 move")
             print("symbol",game.s2,"in",pos1,pos2)
-            game.count = game.count+1
     return redirect(url_for('play'))
     
 

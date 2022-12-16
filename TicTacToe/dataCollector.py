@@ -2,7 +2,6 @@ import pandas as pd
 
 
 gamesCSV = "gamesHrithik.csv"
-finalCSV = "Final509.csv"
 movesCSV = "Moves.csv"
 moves = pd.DataFrame(columns=[
     "Game ID",
@@ -11,18 +10,12 @@ moves = pd.DataFrame(columns=[
     "Position"
 ])
 
-def readGames():
-    try:
-        return pd.read_csv(gamesCSV)
-    except FileNotFoundError:
-        return pd.DataFrame(columns=[
+games = pd.DataFrame(columns=[
             "Game ID",
             "Player1",
             "Player2",
             "Winner"
         ])
-
-games = readGames()
 
 def enterGame(id, name1,name2,winner):
     games.loc[len(games)] = {
@@ -33,8 +26,6 @@ def enterGame(id, name1,name2,winner):
     }
     games.to_csv(gamesCSV, mode='a',index=False, header=False)
     moves.to_csv(movesCSV, mode='a', index=False, header=False)
-    final = pd.merge(games,moves)
-    final.to_csv(finalCSV, mode='a', index=False, header=False)
 
 def enterMove(id,turn,name,position):
     moves.loc[len(moves)]={

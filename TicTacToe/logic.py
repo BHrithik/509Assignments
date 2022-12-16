@@ -13,8 +13,19 @@ class TicTacToe:
         self.count = 0
         self.difficulty = difficulty
         self.id = uuid.uuid1()
-        self.name1 = "Player1",
-        self.name2 = "Player2",
+        self.name1 = "DefaultName1",
+        self.name2 = "bot",
+        self.s1 = "",
+        self.s2 = "",
+        self.isSinglePlayer = False
+
+    def input(self,s, pos1, pos2):
+        if self.board[pos1][pos2] == " ":
+            self.board[pos1][pos2] = s
+            self.count = self.count+1
+        else:
+            print("Position is already taken",pos1,pos2)
+
 
     def input1(self, s1):
         flag = 0
@@ -48,11 +59,14 @@ class TicTacToe:
         print("Computer is making a move")
         while mademove == 0:
             pos = self.difficulty.computerMove()
-            if self.board[pos[0]][pos[1]] == " ":
-                self.board[pos[0]][pos[1]]=s2
-                dataCollector.enterMove(self.id,self.count,self.name2,(pos[0],pos[1]))
-                self.count = self.count + 1
-                mademove = 1
+            if (self.count != 9):
+                if self.board[pos[0]][pos[1]] == " ":
+                    self.board[pos[0]][pos[1]]=s2
+                    x = int(pos[0])
+                    y = int(pos[1])
+                    dataCollector.enterMove(self.id,self.count,self.name2,(x,y))
+                    self.count = self.count + 1
+                    mademove = 1
 
     def print_board(self): # Printing the board with values
         print("\n")

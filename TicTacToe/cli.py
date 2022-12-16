@@ -62,6 +62,7 @@ if __name__ == '__main__':
             game.print_board()
             if(game.count >=9):
                 print("Game over, It is a draw")
+                dataCollector.enterGame(game.id,name1,name2,"-")
                 break
             game.input2(s2) # Funtion to input positions for player 2
             game.print_board() # Printing the board after each move
@@ -71,7 +72,7 @@ if __name__ == '__main__':
                 print(name2,s2," has won the game! Congratulations")
                 dataCollector.enterGame(game.id,name1,name2,name2)
                 break
-    elif multiplayer==0:
+    elif multiplayer==0: # playing against a bot
         while flag == 1 : 
             print(name1,"Please pick")
             s1 = input("X or O -") #Letting user pick X or O
@@ -108,11 +109,13 @@ if __name__ == '__main__':
             if(winner!=None): # While winner is not found the game goes on
                 game.print_board()
                 print(name1," won the game! Congratulations")
+                dataCollector.enterGame(game.id,name1,name2,name1)
                 break
             print("Computers turn")
             game.print_board()
             if(game.count >=9):
                 print("Game over, It is a draw")
+                dataCollector.enterGame(game.id,name1,name2,"-")
                 break
             # Funtion to input positions for player 2
             game.computerMove(s2)
@@ -121,4 +124,5 @@ if __name__ == '__main__':
             if(winner!=None):
                 game.print_board()
                 print(name2," has won the game, You lost :(")
+                dataCollector.enterGame(game.id,name1,name2,name2)
                 break
