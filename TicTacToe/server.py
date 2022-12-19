@@ -2,6 +2,12 @@ from pyexpat.errors import messages
 from flask import Flask, render_template, request, url_for, flash, redirect
 from logic import TicTacToe
 from easy import Easy
+import dataCollector
+import uuid
+import graphmaker
+import json 
+import plotly
+import plotly.express as px
 
 # app = Flask(__name__)
 # app.config['SECRET_KEY'] = 'your secret key'
@@ -22,6 +28,9 @@ def index():
     game.s1 = "",
     game.s2 = "",
     game.isSinglePlayer = False
+    game.id = ""
+    game.id = uuid.uuid4()
+    print(game.id)
     return render_template('index.html')
 
 @app.route('/multiplayer', methods=('POST','GET'))
@@ -78,7 +87,7 @@ def singleplayer():
 
 @app.get('/aboutme')
 def aboutme():
-    return "I am student at UW"
+    return render_template('about.html')
 
 @app.get('/play')
 def play():
@@ -96,56 +105,65 @@ def play():
         player = game.name2 + "'s turn"
     print("s1 ",game.get_winner(game.s1))
     print("s2 ",game.get_winner(game.s2))
-    if(game.get_winner(game.s1) == None or game.get_winner(game.s2)== None):
+    style = "";
+    if(game.get_winner(game.s1) == None and game.get_winner(game.s2)== None):
         message = " "
         if(game.count >= 9):
             message = "It is a draw!"
+            dataCollector.enterGame(game.id,game.name1,game.name2,"-")
             player = ""
+            style = "none"
+            details = ""
     if(game.get_winner(game.s1) == game.s1):
         print(message, "should change and show s1 won")
         message = "Congratulations " + game.name1 + " you have won the game!"
+        dataCollector.enterGame(game.id,game.name1,game.name2,game.name1)
         player = ""
+        style = "none"
+        details = ""
     if(game.get_winner(game.s2) == game.s2):
         print(message, "should change and show s2 won")
-        message = "Congratulations " + game.name2 + " you have won the game!"
+        if( game.name2 != "bot"):
+            message = "Congratulations " + game.name2 + " you have won the game!"
+            dataCollector.enterGame(game.id,game.name1,game.name2,game.name2)
+        else:
+            message = "You lost!"
         player = ""
+        style = "none"
+        details = ""
     data = {
         "board": game.board,
         "details": details,
         "message": message,
         "turn": player,
-        "message":message,
+        "style": style
     }
     return render_template('play.html',data=data)
 
 @app.get('/playing/<int:pos1>/<int:pos2>')
 def playing(pos1,pos2):
-    if(game.board[pos1][pos2] == " "):
+    if(game.board[pos1][pos2] == " " and game.get_winner(game.s1) == None and game.get_winner(game.s2) == None):
         if(game.count%2 == 0):
             game.input(game.s1[0],pos1,pos2)
             print("Move no.",game.count)
             print("symbol",game.s1,"in",pos1,pos2)
             if(game.isSinglePlayer):
-                if(game.get_winner(game.s1) == None and game.get_winner(game.s2) == None):
+                if(game.get_winner(game.s1) == None and game.get_winner(game.s2) == None and game.count != 9):
                     game.computerMove(game.s2[0])
         else:
             game.input(game.s2[0],pos1,pos2)
             print("Player 2 move")
             print("symbol",game.s2,"in",pos1,pos2)
     return redirect(url_for('play'))
+
+@app.get('/stats')
+def stats():
+    graphs = graphmaker.makeGraphTicTacToe()
+    graphJSON1 = json.dumps(graphs[0], cls=plotly.utils.PlotlyJSONEncoder)
+    graphJSON2 = json.dumps(graphs[1], cls=plotly.utils.PlotlyJSONEncoder)
+    graphs = {
+        "graph1": graphJSON1,
+        "graph2": graphJSON2
+    }
+    return render_template("statistics.html", graphs = graphs)
     
-
-
-def boardToDict(board):
-    boardDict = {
-                "00": board[0][0],
-                "01": board[0][1],
-                "02": board[0][2],
-                "10": board[1][0],
-                "11": board[1][1],
-                "12": board[1][2],
-                "20": board[2][0],
-                "21": board[2][1],
-                "22": board[2][2]
-                }
-    return boardDict

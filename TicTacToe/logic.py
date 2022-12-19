@@ -23,6 +23,7 @@ class TicTacToe:
         if self.board[pos1][pos2] == " ":
             self.board[pos1][pos2] = s
             self.count = self.count+1
+            dataCollector.enterMove(self.id,self.count,self.name1,(pos1,pos2))
         else:
             print("Position is already taken",pos1,pos2)
 
@@ -59,7 +60,7 @@ class TicTacToe:
         print("Computer is making a move")
         while mademove == 0:
             pos = self.difficulty.computerMove()
-            if (self.count != 9):
+            if (self.count < 9):
                 if self.board[pos[0]][pos[1]] == " ":
                     self.board[pos[0]][pos[1]]=s2
                     x = int(pos[0])
