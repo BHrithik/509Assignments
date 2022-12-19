@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .middle{
+        max-width: 50%;
+        margin-left: 500px;
+    }
+    .center-card{
+        border:4mm ridge rgb(0, 128, 255);
+        width: 50%;
+        height:50%;
+        margin:auto;
+    }
+</style>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tic Tac Toe</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div>
+        <div class="center-card">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link active" data-bs-toggle="tab">Multi Player</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div style="width:50%; margin:auto;">
+                    <div class="tab-pane fade show active" id="home">
+                        <form method="post">
+                            <div class="form-outline ">
+                                <label for="name1">Name1</label>
+                                <br>
+                                <input class="form-label"  type="text" name="name1"
+                                    placeholder="Name of Player1"
+                                    value="{{ request.form['name1'] }}"></input>
+                                <br>
+                                <p>Player 1 pick a symbol</p>
+                                <input type="radio" name="options1" id="X" value="X"> X </input><br>
+                                <input type="radio" name="options1" id="O" value="O"> O </input><br>
+                                <label for="name2">Name2</label>
+                                <br>
+                                <input class="form-label"  typre="text" name="name2" placeholder="Name of Player2" 
+                                        value="{{ request.form['name2']}}">
+                                </input>
+                                <br>
+                                <button class="btn btn-primary btn-block "  type="submit">Submit</button>
+                                <br>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+</body>
+{% endblock %}

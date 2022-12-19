@@ -1,24 +1,31 @@
 import unittest
-import logic
+from logic import TicTacToe
+from easy import Easy
 
 
 class TestLogic(unittest.TestCase):
 
     def test_get_winner(self):
-        board = [
-            ["X", None, "O"],
-            [None, "X", None],
-            [None, "O", "X"],
-        ]
-        empty_board = [
-        [" "," "," "],
-        [" "," "," "],
-        [" "," "," "],]
-        logic.print_board(board) # Checking if the print function is working properly
-        self.assertEqual(logic.make_empty_board(),empty_board) # Should always return empty board
-        self.assertEqual(logic.get_winner(board,"X"), "X") # In the given board the X wins
-        self.assertEqual(logic.get_winner(board,"O"), None) # In the given board O is not the winner so it should return none
-
+        difficulty = Easy()
+        testGame = TicTacToe(difficulty)
+        testGame.print_board() # Checking if the print function is working properly
+        newBoard = [[" "," "," "],
+                    [" "," "," "],
+                    [" "," "," "],]
+        #board = testGame.board()
+        self.assertEqual(testGame.board,newBoard) # Should always return empty board
+        testGame.board = [["X", None, "O"],
+                        [None, "X", None],
+                        [None, "O", "X"],]
+        self.assertEqual(testGame.get_winner("X"), "X") # In the given board the X wins
+        testGame.board = [["X", None, "O"],
+                        ["O", "O", "O"],
+                        ["X", "O", "X"],]
+        self.assertEqual(testGame.get_winner("O"), "O") # In the given board O is the winner so it should return O
+        testGame.board = [["X","X", "O"],
+                        ["O", "O", "X"],
+                        ["X", "O", "X"],]
+        self.assertEqual(testGame.get_winner("O"),None) # Checking when no one is a winner
 
 if __name__ == '__main__':
     unittest.main()
